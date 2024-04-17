@@ -5,6 +5,7 @@ import (
 	"github.com/ikti-its/khanza-dashboard-api/internal/app/config"
 	"github.com/ikti-its/khanza-dashboard-api/internal/app/provider"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/joho/godotenv/autoload"
 	"log"
 )
 
