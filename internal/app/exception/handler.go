@@ -2,8 +2,8 @@ package exception
 
 import (
 	"errors"
-	"github.com/fathoor/go-modular/internal/app/model"
 	"github.com/gofiber/fiber/v2"
+	"github.com/ikti-its/khanza-dashboard-api/internal/app/model"
 )
 
 func Handler(ctx *fiber.Ctx, err error) error {

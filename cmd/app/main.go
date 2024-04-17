@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/fathoor/go-modular/internal/app/config"
-	"github.com/fathoor/go-modular/internal/app/provider"
+	"github.com/ikti-its/khanza-dashboard-api/internal/app/config"
+	"github.com/ikti-its/khanza-dashboard-api/internal/app/provider"
 	"github.com/jmoiron/sqlx"
 	"log"
 )

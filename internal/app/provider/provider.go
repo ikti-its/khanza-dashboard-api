@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/fathoor/go-modular/internal/app/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/ikti-its/khanza-dashboard-api/internal/app/config"
 	"github.com/jmoiron/sqlx"
 )
 

@@ -2,8 +2,8 @@ package config
 
 import (
 	"fmt"
-	"github.com/fathoor/go-modular/internal/app/exception"
 	"github.com/go-playground/validator/v10"
+	"github.com/ikti-its/khanza-dashboard-api/internal/app/exception"
 	"strings"
 )
 

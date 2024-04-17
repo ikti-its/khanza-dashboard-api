@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/fathoor/go-modular/scripts/templates"
+	"github.com/ikti-its/khanza-dashboard-api/scripts/templates"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"log"

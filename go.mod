@@ -1,4 +1,4 @@
-module github.com/fathoor/go-modular
+module github.com/ikti-its/khanza-dashboard-api
 
 go 1.22.0
 
