@@ -38,8 +38,7 @@ func (c *AkunController) Create(ctx *fiber.Ctx) error {
 		})
 	}
 
-	updater := ctx.Locals("user").(string)
-	response := c.UseCase.Create(&request, updater)
+	response := c.UseCase.Create(&request)
 
 	return ctx.Status(fiber.StatusCreated).JSON(web.Response{
 		Code:   fiber.StatusCreated,
@@ -106,8 +105,7 @@ func (c *AkunController) Update(ctx *fiber.Ctx) error {
 		})
 	}
 
-	updater := ctx.Locals("user").(string)
-	response := c.UseCase.Update(&request, updater, id)
+	response := c.UseCase.Update(&request, id)
 
 	return ctx.Status(fiber.StatusOK).JSON(web.Response{
 		Code:   fiber.StatusOK,
@@ -118,9 +116,8 @@ func (c *AkunController) Update(ctx *fiber.Ctx) error {
 
 func (c *AkunController) Delete(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
-	updater := ctx.Locals("user").(string)
 
-	c.UseCase.Delete(id, updater)
+	c.UseCase.Delete(id)
 
 	return ctx.SendStatus(fiber.StatusNoContent)
 }

@@ -12,10 +12,10 @@ func Route(
 ) {
 	akun := app.Group("/v1/akun")
 	{
-		akun.Post("/", middleware.Authenticate([]int{1337, 1}), controller.Create)
-		akun.Get("/", middleware.Authenticate([]int{1337, 1, 2}), controller.Get)
-		akun.Get("/:id", middleware.Authenticate([]int{1337, 1, 2}), controller.GetById)
-		akun.Put("/:id", middleware.Authenticate([]int{1337, 1, 2}), controller.Update)
-		akun.Delete("/:id", middleware.Authenticate([]int{1337, 1}), controller.Delete)
+		akun.Post("/", middleware.Authenticate([]int{1000}), controller.Create)
+		akun.Get("/", middleware.Authenticate([]int{1000, 2000}), controller.Get)
+		akun.Get("/:id", middleware.Authenticate([]int{1000, 2000}), controller.GetById)
+		akun.Put("/:id", middleware.Authenticate([]int{1000, 2000}), controller.Update)
+		akun.Delete("/:id", middleware.Authenticate([]int{1000}), controller.Delete)
 	}
 }

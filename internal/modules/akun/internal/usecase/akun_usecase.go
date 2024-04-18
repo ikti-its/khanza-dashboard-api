@@ -22,8 +22,8 @@ func NewAkunUseCase(repository *repository.AkunRepository, cfg *config.Config) *
 	}
 }
 
-func (u *AkunUseCase) Create(request *model.CreateAkunRequest, updater string) model.AkunResponse {
-	if role := request.Role; role == 1 || role == 1337 {
+func (u *AkunUseCase) Create(request *model.CreateAkunRequest) model.AkunResponse {
+	if role := request.Akses; role == 1000 {
 		panic(&exception.ForbiddenError{
 			Message: "Not allowed to create this role",
 		})
@@ -38,11 +38,12 @@ func (u *AkunUseCase) Create(request *model.CreateAkunRequest, updater string) m
 
 	akun := entity.Akun{
 		Id:       helper.MustNew(),
+		Nama:     request.Nama,
 		Email:    request.Email,
 		Password: string(encrypted),
 		Foto:     request.Foto,
-		Role:     request.Role,
-		Updater:  helper.MustParse(updater),
+		Akses:    request.Akses,
+		Verified: request.Verified,
 	}
 
 	if err := u.Repository.Insert(&akun); err != nil {
@@ -50,10 +51,12 @@ func (u *AkunUseCase) Create(request *model.CreateAkunRequest, updater string) m
 	}
 
 	response := model.AkunResponse{
-		Id:    akun.Id.String(),
-		Email: akun.Email,
-		Foto:  akun.Foto,
-		Role:  akun.Role,
+		Id:       akun.Id.String(),
+		Nama:     akun.Nama,
+		Email:    akun.Email,
+		Foto:     akun.Foto,
+		Akses:    akun.Akses,
+		Verified: akun.Verified,
 	}
 
 	return response
@@ -66,10 +69,12 @@ func (u *AkunUseCase) Get() []model.AkunResponse {
 	response := make([]model.AkunResponse, len(akun))
 	for i, akun := range akun {
 		response[i] = model.AkunResponse{
-			Id:    akun.Id.String(),
-			Email: akun.Email,
-			Foto:  akun.Foto,
-			Role:  akun.Role,
+			Id:       akun.Id.String(),
+			Nama:     akun.Nama,
+			Email:    akun.Email,
+			Foto:     akun.Foto,
+			Akses:    akun.Akses,
+			Verified: akun.Verified,
 		}
 	}
 
@@ -83,10 +88,12 @@ func (u *AkunUseCase) GetPage(page, size int) model.AkunPageResponse {
 	response := make([]model.AkunResponse, len(akun))
 	for i, akun := range akun {
 		response[i] = model.AkunResponse{
-			Id:    akun.Id.String(),
-			Email: akun.Email,
-			Foto:  akun.Foto,
-			Role:  akun.Role,
+			Id:       akun.Id.String(),
+			Nama:     akun.Nama,
+			Email:    akun.Email,
+			Foto:     akun.Foto,
+			Akses:    akun.Akses,
+			Verified: akun.Verified,
 		}
 	}
 
@@ -109,16 +116,18 @@ func (u *AkunUseCase) GetById(id string) model.AkunResponse {
 	}
 
 	response := model.AkunResponse{
-		Id:    akun.Id.String(),
-		Email: akun.Email,
-		Foto:  akun.Foto,
-		Role:  akun.Role,
+		Id:       akun.Id.String(),
+		Nama:     akun.Nama,
+		Email:    akun.Email,
+		Foto:     akun.Foto,
+		Akses:    akun.Akses,
+		Verified: akun.Verified,
 	}
 
 	return response
 }
 
-func (u *AkunUseCase) Update(request *model.UpdateAkunRequest, updater, id string) model.AkunResponse {
+func (u *AkunUseCase) Update(request *model.UpdateAkunRequest, id string) model.AkunResponse {
 	akun, err := u.Repository.FindById(helper.MustParse(id))
 	if err != nil {
 		panic(&exception.NotFoundError{
@@ -127,6 +136,7 @@ func (u *AkunUseCase) Update(request *model.UpdateAkunRequest, updater, id strin
 	}
 
 	akun.Id = helper.MustParse(id)
+	akun.Nama = request.Nama
 	akun.Email = request.Email
 	if request.Password != "" {
 		encrypted, err := helper.EncryptPassword(request.Password)
@@ -135,31 +145,31 @@ func (u *AkunUseCase) Update(request *model.UpdateAkunRequest, updater, id strin
 		akun.Password = string(encrypted)
 	}
 	akun.Foto = request.Foto
-	akun.Updater = helper.MustParse(updater)
+	akun.Verified = request.Verified
 
 	if err := u.Repository.Update(&akun); err != nil {
 		exception.PanicIfError(err, "Failed to update akun")
 	}
 
 	response := model.AkunResponse{
-		Id:    akun.Id.String(),
-		Email: akun.Email,
-		Foto:  akun.Foto,
-		Role:  akun.Role,
+		Id:       akun.Id.String(),
+		Nama:     akun.Nama,
+		Email:    akun.Email,
+		Foto:     akun.Foto,
+		Akses:    akun.Akses,
+		Verified: akun.Verified,
 	}
 
 	return response
 }
 
-func (u *AkunUseCase) Delete(id, updater string) {
+func (u *AkunUseCase) Delete(id string) {
 	akun, err := u.Repository.FindById(helper.MustParse(id))
 	if err != nil {
 		panic(&exception.NotFoundError{
 			Message: "Akun not found",
 		})
 	}
-
-	akun.Updater = helper.MustParse(updater)
 
 	if err := u.Repository.Delete(&akun); err != nil {
 		exception.PanicIfError(err, "Failed to delete akun")

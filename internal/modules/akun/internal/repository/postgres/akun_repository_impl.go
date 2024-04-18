@@ -19,20 +19,19 @@ func NewAkunRepository(db *sqlx.DB) repository.AkunRepository {
 
 func (r *akunRepositoryImpl) Insert(akun *entity.Akun) error {
 	query := `
-		INSERT INTO akun (id, email, password, foto, role) 
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO akun (id, nama, email, password, foto, akses, verified) 
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
-	_, err := r.DB.Exec(query, akun.Id, akun.Email, akun.Password, akun.Foto, akun.Role)
+	_, err := r.DB.Exec(query, akun.Id, akun.Nama, akun.Email, akun.Password, akun.Foto, akun.Akses, akun.Verified)
 
 	return err
 }
 
 func (r *akunRepositoryImpl) Find() ([]entity.Akun, error) {
 	query := `
-		SELECT id, email, foto, role 
-		FROM akun 
-		WHERE deleted_at IS NULL
+		SELECT id, nama, email, password, foto, akses, verified
+		FROM akun
 	`
 
 	var records []entity.Akun
@@ -43,12 +42,11 @@ func (r *akunRepositoryImpl) Find() ([]entity.Akun, error) {
 
 func (r *akunRepositoryImpl) FindPage(page, size int) ([]entity.Akun, int, error) {
 	query := `
-		SELECT id, email, foto, role 
-		FROM akun 
-		WHERE deleted_at IS NULL 
+		SELECT id, nama, email, password, foto, akses, verified
+		FROM akun
 		LIMIT $1 OFFSET $2
 	`
-	totalQuery := "SELECT COUNT(*) FROM akun WHERE deleted_at IS NULL"
+	totalQuery := "SELECT COUNT(*) FROM akun"
 
 	var total int64
 	if err := r.DB.Get(&total, totalQuery); err != nil {
@@ -66,9 +64,9 @@ func (r *akunRepositoryImpl) FindPage(page, size int) ([]entity.Akun, int, error
 
 func (r *akunRepositoryImpl) FindById(id uuid.UUID) (entity.Akun, error) {
 	query := `
-		SELECT id, email, foto, role 
-		FROM akun 
-		WHERE id = $1 AND deleted_at IS NULL
+		SELECT id, nama, email, password, foto, akses, verified
+		FROM akun
+		WHERE id = $1
 	`
 
 	var record entity.Akun
@@ -80,23 +78,22 @@ func (r *akunRepositoryImpl) FindById(id uuid.UUID) (entity.Akun, error) {
 func (r *akunRepositoryImpl) Update(akun *entity.Akun) error {
 	query := `
 		UPDATE akun 
-		SET email = $1, password = $2, foto = $3, role = $4, updated_at = $5, updater = $6 
-		WHERE id = $7 AND deleted_at IS NULL
+		SET nama = $2, email = $3, password = $4, foto = $5, akses = $6, verified = $7, updated_at = $8
+		WHERE id = $1
 	`
 
-	_, err := r.DB.Exec(query, akun.Email, akun.Password, akun.Foto, akun.Role, time.Now(), akun.Updater, akun.Id)
+	_, err := r.DB.Exec(query, akun.Id, akun.Nama, akun.Email, akun.Password, akun.Foto, akun.Akses, akun.Verified, time.Now())
 
 	return err
 }
 
 func (r *akunRepositoryImpl) Delete(akun *entity.Akun) error {
 	query := `
-		UPDATE akun 
-		SET deleted_at = $1, updater = $2
-		WHERE id = $3
+		DELETE FROM akun
+		WHERE id = $1
 	`
 
-	_, err := r.DB.Exec(query, time.Now(), akun.Updater, akun.Id)
+	_, err := r.DB.Exec(query, akun.Id)
 
 	return err
 }

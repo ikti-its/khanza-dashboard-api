@@ -6,9 +6,10 @@ import (
 
 type Akun struct {
 	Id       uuid.UUID `db:"id"`
+	Nama     string    `db:"nama"`
 	Email    string    `db:"email"`
 	Password string    `db:"password"`
 	Foto     string    `db:"foto"`
-	Role     int       `db:"role"`
-	Updater  uuid.UUID `db:"updater"`
+	Akses    int       `db:"akses"`
+	Verified bool      `db:"verified"`
 }
