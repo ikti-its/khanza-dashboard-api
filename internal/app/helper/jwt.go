@@ -17,10 +17,10 @@ func GenerateJWT(userId uuid.UUID, role int, cfg *config.Config) (string, error)
 
 	sub := userId.String()
 	claims := jwt.MapClaims{
-		"sub":  sub,
-		"role": role,
-		"iat":  iat,
-		"exp":  exp,
+		"sub":   sub,
+		"akses": role,
+		"iat":   iat,
+		"exp":   exp,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
