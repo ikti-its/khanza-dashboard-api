@@ -34,7 +34,7 @@ func (u *AuthUseCase) Login(request *model.AuthRequest) model.AuthResponse {
 		})
 	}
 
-	token, err := helper.GenerateJWT(akun.Id, akun.Role, u.Config)
+	token, err := helper.GenerateJWT(akun.Id, akun.Akses, u.Config)
 	exception.PanicIfError(err, "Failed to generate JWT")
 
 	response := model.AuthResponse{

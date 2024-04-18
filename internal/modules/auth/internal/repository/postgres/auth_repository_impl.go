@@ -16,9 +16,9 @@ func NewAuthRepository(db *sqlx.DB) repository.AuthRepository {
 
 func (r *authRepositoryImpl) FindByEmail(email string) (entity.Auth, error) {
 	query := `
-		SELECT id, email, password, role
+		SELECT id, email, password, akses
 		FROM akun
-		WHERE email = $1 AND deleted_at IS NULL
+		WHERE email = $1
 	`
 
 	var record entity.Auth
