@@ -16,11 +16,11 @@ func Authenticate(roles []int) func(ctx *fiber.Ctx) error {
 			claims := ctx.Locals("jwt").(*jwt.Token).Claims.(jwt.MapClaims)
 
 			ctx.Locals("user", claims["sub"])
-			ctx.Locals("role", int(claims["role"].(float64)))
+			ctx.Locals("role", int(claims["akses"].(float64)))
 
 			// Roles
-			// 0: Public, 1337: Developer, 1: Admin, 2: Pegawai, ... (ask developer)
-			role := int(claims["role"].(float64))
+			// 0: Public, 1000: Admin, 2000: Pegawai
+			role := int(claims["akses"].(float64))
 
 			if roles[0] == 0 {
 				return ctx.Next()
