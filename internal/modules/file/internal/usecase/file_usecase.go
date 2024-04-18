@@ -34,19 +34,6 @@ func (u *FileUseCase) generateFileName(request *model.FileRequest, fileType stri
 				Message: "File size exceeds limit",
 			})
 		}
-	case "doc":
-		ext := path.Ext(request.File.Filename)
-		if ext != ".pdf" && ext != ".doc" && ext != ".docx" {
-			panic(&exception.BadRequestError{
-				Message: fmt.Sprintf("Invalid file extension: %s is not supported", ext),
-			})
-		}
-
-		if request.File.Size > 5*1024*1024 {
-			panic(&exception.BadRequestError{
-				Message: "File size exceeds limit",
-			})
-		}
 	default:
 		panic(&exception.BadRequestError{
 			Message: fmt.Sprintf("Invalid file type: %s is not supported", fileType),
